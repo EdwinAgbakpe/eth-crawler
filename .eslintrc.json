@@ -19,6 +19,11 @@
     "no-underscore-dangle": "off",
     "no-console": "off",
     "react/no-array-index-key": "off",
-    "import/extensions": [0]
+    "import/extensions": [0],
+    "jsx-a11y/label-has-associated-control": ["error", {
+      "required": {
+        "some": ["nesting", "id"]
+      }
+    }]
   }
 }
