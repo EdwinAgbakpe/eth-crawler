@@ -77,7 +77,7 @@ export async function getServerSideProps(context) {
     `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=${startblock}&endblock=${endblock}&page=${currPage}&offset=10&sort=asc&apikey=${API_KEY}`,
   );
   const data = await res.json();
-  console.log(data.message);
+  console.log(data.status);
   return { props: { data, currPage } };
 }
 

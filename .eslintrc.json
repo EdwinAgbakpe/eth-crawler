@@ -35,6 +35,7 @@
         "required": {
           "some": ["nesting", "id"]
         }
-      }]
+      }],
+      "no-plusplus": "off"
     }
 }

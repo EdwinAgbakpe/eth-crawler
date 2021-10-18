@@ -59,6 +59,7 @@ export default function BlnCheckCard() {
             type="date"
             onChange={handleChange}
             value={form.date}
+            max={new Date().toISOString().split('T')[0]}
           />
         </div>
 

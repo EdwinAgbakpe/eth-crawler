@@ -24,7 +24,7 @@ export default function TxnTable({ data }) {
                     <td className=" px-6 py-4 text-sm text-center">{new Date(txn.timeStamp * 1000).toDateString()}</td>
                     <td className=" px-6 py-4 text-sm text-center">{txn.from}</td>
                     <td className=" px-6 py-4 text-sm text-center">{txn.to}</td>
-                    <td className=" px-6 py-4 text-sm text-center">{txn.value}</td>
+                    <td className=" px-6 py-4 text-sm text-center">{txn.value / 1000000000000000000}</td>
                   </tr>
                 ))}
               </tbody>
