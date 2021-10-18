@@ -1,4 +1,32 @@
+import { useState } from 'react';
+import Router from 'next/router';
+
 export default function TxSearchCard() {
+  const [form, setForm] = useState({
+    address: '',
+    startblock: '',
+    endblock: '',
+  });
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const url = `/txns?address=${form.address}&startblock=${form.startblock}&endblock=${form.endblock}`;
+      Router.push(url);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div className="w-full max-w-md">
       <form className="bg-charcoal shadow-md rounded-3xl px-8 pt-6 pb-8">
@@ -12,6 +40,9 @@ export default function TxSearchCard() {
           <input
             className="shadow-inner bg-linen appearance-none border-2 h-12 border-umber rounded-2xl w-full py-2 px-3 text-fogra leading-tight focus:outline-none"
             id="address"
+            name="address"
+            onChange={handleChange}
+            value={form.address}
             type="text"
             placeholder=""
           />
@@ -27,6 +58,9 @@ export default function TxSearchCard() {
             <input
               className="shadow-inner appearance-none block w-full h-12 bg-linen text-fogra border-2 border-umber rounded-2xl py-3 px-4 mb-3 leading-tight focus:outline-none"
               id="startblock"
+              name="startblock"
+              onChange={handleChange}
+              value={form.startblock}
               type="number"
               min="0"
               placeholder=""
@@ -42,6 +76,9 @@ export default function TxSearchCard() {
             <input
               className="shadow-inner appearance-none block w-full h-12 bg-linen text-fogra border-2 border-umber rounded-2xl py-3 px-4 leading-tight focus:outline-none"
               id="endblock"
+              name="endblock"
+              onChange={handleChange}
+              value={form.endblock}
               type="number"
               min="0"
               placeholder=""
@@ -54,6 +91,7 @@ export default function TxSearchCard() {
             <button
               className="shadow h-12 w-36 text-xl bg-green hover:bg-green-400 focus:shadow-outline focus:outline-none text-linen font-medium py-2 px-4 rounded-2xl"
               type="button"
+              onClick={handleSubmit}
             >
               Search
             </button>

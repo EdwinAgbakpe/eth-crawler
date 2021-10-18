@@ -1,8 +1,8 @@
-import Head from "next/head";
-import Script from "next/script";
-import Header from "./Header";
+import Head from 'next/head';
+import Script from 'next/script';
+import Header from './Header';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }) {
   return (
     <>
       <Head>
