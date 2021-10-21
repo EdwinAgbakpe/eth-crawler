@@ -118,11 +118,12 @@ export async function getServerSideProps(context) {
     address, startblock, endblock, txType,
   } = context.query;
   const action = txType;
+  let txns = null;
   const res = await fetch(
     `https://api.etherscan.io/api?module=account&action=${action}&address=${address}&startblock=${startblock}&endblock=${endblock}&page=1&offset=10000&sort=desc&apikey=${API_KEY}`,
   );
   const data = await res.json();
-  const txns = data.result;
+  if (typeof (data.result) !== 'object') { txns = []; } else { txns = data.result; }
 
   return { props: { txns } };
 }

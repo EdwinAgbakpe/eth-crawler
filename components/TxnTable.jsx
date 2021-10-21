@@ -2,7 +2,7 @@ export default function TxnTable({ data }) {
   return (
     <div>
       {
-      !data ? <h1>No data found</h1>
+      data.length === 0 ? <h1>No data found</h1>
         : (
           <div>
             <table className="table-fixed">
