@@ -29,13 +29,13 @@ export default function BlnCheckCard() {
   }
 
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-sm md:max-w-md lg:max-w-lg mb-8">
       <form className="bg-charcoal shadow-md rounded-3xl px-8 pt-6 pb-8">
-        <div className="mb-4">
-          <h1 className="text-5xl text-center">View Account Balance</h1>
+        <div className="mb-2 md:mb-3 lg:mb-4">
+          <h1 className="text-2xl md:text-3xl lg:text-5xl text-center">View Account Balance</h1>
         </div>
-        <div className="mb-6">
-          <label className="block text-xl font-medium mb-2" htmlFor="address">
+        <div className="mb-3 md:mb-6">
+          <label className="block text-sm md:text-lg lg:text-xl font-medium mb lg:mb-2" htmlFor="address">
             Wallet Address (required)
           </label>
           <input
@@ -48,8 +48,8 @@ export default function BlnCheckCard() {
             placeholder=""
           />
         </div>
-        <div className="mb-12">
-          <label className="block text-xl font-medium mb-2" htmlFor="date">
+        <div className="mb-6 md:mb-12">
+          <label className="block text-sm md:text-lg lg:text-xl font-medium mb lg:mb-2" htmlFor="date">
             Date (required)
           </label>
           <input
@@ -63,11 +63,11 @@ export default function BlnCheckCard() {
           />
         </div>
 
-        <div className="md:flex md:items-center">
-          <div className="md:w-1/3" />
-          <div className="md:w-2/3">
+        <div className="flex items-center">
+          <div className="w-1/3" />
+          <div className="w-1/3">
             <button
-              className="shadow h-12 w-36 text-xl bg-green hover:bg-green-400 focus:shadow-outline focus:outline-none text-linen font-medium py-2 px-4 rounded-2xl"
+              className="shadow h-12 w-full md:w-36 text-md md:text-xl bg-green text-linen font-medium rounded-2xl"
               type="button"
               onClick={handleSubmit}
             >

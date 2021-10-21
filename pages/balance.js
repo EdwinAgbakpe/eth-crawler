@@ -1,19 +1,18 @@
 /* eslint-disable no-loop-func */
 /* eslint-disable no-await-in-loop */
 import Layout from '../components/Layout';
-// import { } from 'dotenv/config';
 
 const Balance = ({ balance, prevBalance, date }) => {
   const dateString = new Date(date).toDateString();
   return (
     <Layout>
-      <div className="p-4 mx-12">
+      <div className="p-4 mx-auto bg-charcoal">
         <h1 className="py-2">
           Balance:
           {' '}
           {balance}
           {' '}
-          Ether
+          ETH
         </h1>
         <h1 className="py-2">
           {' '}
@@ -24,7 +23,7 @@ const Balance = ({ balance, prevBalance, date }) => {
           {' '}
           {prevBalance}
           {' '}
-          Ether
+          ETH
         </h1>
       </div>
     </Layout>
@@ -51,7 +50,6 @@ export async function getServerSideProps(context) {
   );
   data = await res.json();
   const endblock = data.result;
-  console.log(endblock);
   let prevBalance = 0;
   let page = 1;
   let status = true;
@@ -77,7 +75,6 @@ export async function getServerSideProps(context) {
       status = false;
     }
   }
-  console.log(prevBalance);
   return { props: { balance, prevBalance, date } };
 }
 

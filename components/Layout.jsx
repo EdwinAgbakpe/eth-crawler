@@ -28,7 +28,7 @@ export default function Layout({ children }) {
         id="background"
       >
         <Header />
-        <div className="my-20">{children}</div>
+        <div className="my-12 md:my-16 lg:my-20">{children}</div>
       </div>
 
       <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" />

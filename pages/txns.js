@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import ReactPaginate from 'react-paginate';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
@@ -5,17 +6,40 @@ import Layout from '../components/Layout';
 import TxnTable from '../components/TxnTable';
 // import { } from 'dotenv/config';
 
-const Txns = ({ data, currPage }) => {
-  const { result } = data;
+const Txns = ({ txns }) => {
   const router = useRouter();
-  const paginationHandler = (page) => {
+  const [currPage, setCurrPage] = useState(0);
+  const perPage = 10;
+  const offset = currPage * perPage;
+  const pageCount = Math.ceil(txns.length / perPage);
+  const shownData = txns.slice(offset, offset + perPage);
+
+  const paginationHandler = ({ selected: selectedPage }) => {
+    setCurrPage(selectedPage);
+  };
+
+  // const [txType, setTxType] = useState(router.query.txType);
+
+  const setRoute = (tx) => {
     const currentPath = router.pathname;
-    const currentQuery = { ...router.query }; // Copy current query to avoid its removing
-    currentQuery.page = page.selected + 1;
+    const currentQuery = { ...router.query };
+    currentQuery.txType = tx;
     router.push({
       pathname: currentPath,
       query: currentQuery,
     });
+  };
+
+  const nmTxHandler = async (e) => {
+    e.preventDefault();
+    // setTxType('txlist');
+    setRoute('txlist');
+  };
+
+  const inTxHandler = async (e) => {
+    e.preventDefault();
+    // setTxType('txlistinternal');
+    setRoute('txlistinternal');
   };
 
   const [isLoading, setLoading] = useState(false); // State for loading indicator
@@ -36,31 +60,52 @@ const Txns = ({ data, currPage }) => {
 
   return (
     <Layout>
-      <div className="mx-16">
+      <div className="mx-4 md:mx-8 lg:mx-16">
         {isLoading ? <h1>Loading...</h1>
           : (
-            <TxnTable
-              data={result}
-            />
-          )}
-        <ReactPaginate
-          previousLabel="<"
-          nextLabel=">"
-          breakLabel="..."
-          breakClassName="break-me"
-          activeClassName="active bg-charcoal text-md text-linen font-medium py-2 px-4 rounded-full"
-          previousClassName="text-md bg-green hover:bg-green-400 focus:shadow-outline focus:outline-none text-linen font-medium py-2 px-4 rounded-full"
-          nextClassName="text-md bg-green hover:bg-green-400 focus:shadow-outline focus:outline-none text-linen font-medium py-2 px-4 rounded-full"
-          containerClassName="pagination -mx-auto p-8 flex justify-center"
+            <div>
+              <div className="mx-auto flex justify-left px-4 pt-16 pb-4 md:py lg:py">
+                <button
+                  className="text-xl bg-green hover:bg-green-400 focus:shadow-outline focus:outline-none text-linen font-medium py-2 px-4 rounded-full"
+                  type="button"
+                  onClick={nmTxHandler}
+                >
+                  Normal
+                </button>
+                <button
+                  className="mx-8 text-xl bg-green hover:bg-green-400 focus:shadow-outline focus:outline-none text-linen font-medium py-2 px-4 rounded-full"
+                  type="button"
+                  onClick={inTxHandler}
+                >
+                  Internal
+                </button>
+              </div>
+              <div className="w-full overflow-x-scroll">
+                <TxnTable
+                  data={shownData}
+                />
+              </div>
+              <div className="grid justify-center">
+                <ReactPaginate
+                  previousLabel="<"
+                  nextLabel=">"
+                  breakLabel="..."
+                  breakClassName="break-me"
+                  activeLinkClassName="active bg-charcoal text-md text-linen font-medium py-2 px-2 rounded-full"
+                  previousLinkClassName="text-sm md:text-md bg-green text-linen font-medium py-2 px-4 rounded-full"
+                  nextLinkClassName="text-sm md:text-md bg-green text-linen font-medium py-2 px-4 rounded-full"
+                  containerClassName="pagination -mx-auto p-8 flex justify-center"
           // subContainerClassName="px-8 mx-4 flex items-center"
-          pageClassName="mx-4 text-md text-linen font-medium py-2 px-4"
-          pageLinkClassName="text-linen"
-          initialPage={currPage - 1}
-          pageCount={100}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={paginationHandler}
-        />
+                  pageClassName=""
+                  pageLinkClassName="text-linen mx-4 text-md text-linen font-medium py-2 px"
+                  pageCount={pageCount}
+                  marginPagesDisplayed={1}
+                  pageRangeDisplayed={1}
+                  onPageChange={paginationHandler}
+                />
+              </div>
+            </div>
+          )}
       </div>
 
     </Layout>
@@ -70,15 +115,16 @@ const Txns = ({ data, currPage }) => {
 export async function getServerSideProps(context) {
   const { API_KEY } = process.env;
   const {
-    address, startblock, endblock, page,
+    address, startblock, endblock, txType,
   } = context.query;
-  const currPage = page || 1;
+  const action = txType;
   const res = await fetch(
-    `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=${startblock}&endblock=${endblock}&page=${currPage}&offset=10&sort=asc&apikey=${API_KEY}`,
+    `https://api.etherscan.io/api?module=account&action=${action}&address=${address}&startblock=${startblock}&endblock=${endblock}&page=1&offset=10000&sort=desc&apikey=${API_KEY}`,
   );
   const data = await res.json();
-  console.log(data.status);
-  return { props: { data, currPage } };
+  const txns = data.result;
+
+  return { props: { txns } };
 }
 
 export default Txns;
